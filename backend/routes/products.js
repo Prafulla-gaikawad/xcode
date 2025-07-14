@@ -34,13 +34,17 @@ const productSchema = z.object({
   date: z.string().optional(),
 });
 
+const serverUrl = process.env.SERVER_URL || "https://xcode-o3mo.onrender.com";
+
 // Create product
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     const parsed = productSchema.safeParse(req.body);
     if (!parsed.success)
       return res.status(400).json({ error: parsed.error.errors });
-    const image = req.file ? `/uploads/${req.file.filename}` : undefined;
+    const image = req.file
+      ? `${serverUrl}/uploads/${req.file.filename}`
+      : undefined;
     const product = new Product({ ...parsed.data, image });
     await product.save();
     res.status(201).json(product);
@@ -85,7 +89,7 @@ router.put("/:id", upload.single("image"), async (req, res) => {
     if (!parsed.success)
       return res.status(400).json({ error: parsed.error.errors });
     const update = { ...parsed.data };
-    if (req.file) update.image = `/uploads/${req.file.filename}`;
+    if (req.file) update.image = `${serverUrl}/uploads/${req.file.filename}`;
     const product = await Product.findByIdAndUpdate(req.params.id, update, {
       new: true,
     });
