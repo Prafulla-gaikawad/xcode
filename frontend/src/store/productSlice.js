@@ -11,7 +11,7 @@ const initialState = {
 
 // API base URL
 // const API_URL = "http://localhost:3000/api/products";
-const API_URL = "https://xcode-o3mo.onrender.com";
+const API_URL = "https://xcode-o3mo.onrender.com/api/products";
 
 // Thunks
 export const fetchProducts = createAsyncThunk(
